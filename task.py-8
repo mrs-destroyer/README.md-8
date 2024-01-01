@@ -1,0 +1,241 @@
+# Functions in Python
+def hello_world():
+    print("Hello World !")
+    print("Good Morning !")
+    print()
+
+
+hello_world()
+hello_world()
+hello_world()
+
+
+# class method vs static -method in Python
+# class method()
+class Employee:
+    company = "Apple"
+    def show(self):
+        print(f"The name is{self.name} and company is {self.company}")
+
+    def changeCompany(self,newCompany):
+        self.Company = newCompany    
+
+
+e1 = Employee()
+e1.name = 'Mrs.Destroyer'
+e1.show()
+
+# static method
+class Math:
+
+    @staticmethod
+    def add(a,b):
+     return a+b
+
+result = Math.add(1,2)
+print(result)
+
+
+# Write an empty function in Python – pass statement
+mytuple = ()
+print(mytuple)
+
+
+# Yield instead of Return
+def simpleGenaratorFun():
+    yield 1
+    yield 2
+    yield 3
+for value in simpleGenaratorFun():
+    print(value)
+def nextSquare():
+    i=1
+    while True:
+        yield i*i
+        i+=1
+for num in nextSquare():
+    if num>100:
+        break
+    print(num)      
+
+
+# Return Multiple Values
+def add_and_subtract(x,y):
+    sum = x + y
+    difference = x - y
+    return sum, difference
+
+total, diff = add_and_subtract(50,20)
+
+print("total :" , total)
+print("diff :" , diff)
+
+
+
+# Partial Functions in Python
+from functools import partial
+def f(a,b,c,x):
+    return 1000*a + 100*b + 10*c + x
+g = partial(f,2,4,6)
+print(g(8))
+
+
+
+# First Class functions in Python
+def plusOne(number):
+    return number+1
+def plusTwo(number):
+    return number+2 
+def plusThree(number):
+    return number+3 
+def plusFour(number):
+    return number+4
+func_list = [plusOne , plusTwo , plusThree , plusFour]
+for func in func_list:
+    print(func(20))
+
+
+
+# Precision Handling
+import math
+a = 4.4564
+print(math.trunc(a))
+print(math.ceil(a))
+print(math.floor(a))
+a = 4.565768932
+print('%.2f'%a)
+print("{0:.3f}".format(a))
+
+
+
+# *args and **kwargs
+# *args
+def add(*args):
+    total = 0
+    for arg in args:
+        total += arg
+    return total 
+print(add(1,2,3,4,5))       
+# *kwargs
+def print_address(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key} : {value}")
+print_address(street="123 Fake St.",city="Destroit",state="MI",zip="45776")        
+
+
+
+# Python closures
+def outer_func(a):
+    def inner_func(b):
+        return a*b
+    return inner_func
+closure = outer_func(5)
+res = closure(3)
+print(res)
+
+
+
+# Function Decorators
+import datetime
+def log(func):
+    def wrapper(*args,**kwargs):
+        with open("logs.txt", "a") as f:
+            f.write("Called function with" + " ".join([str(arg) for arg in args]) + "at" + str(datetime.datetime.now())+ "\n")
+        val = func(*args,**kwargs)
+        return val    
+    return wrapper
+@log
+def run(a,b,c=9):
+    print(a+b+c)
+run(1,3,c=9)            
+
+
+
+# Decorators in Python
+def decor(addition):
+    def inner():
+        result = addition()
+        num3 = float(input("Enter third number:"))
+        result = result+num3
+        return result
+    return inner
+
+def addition():
+    num1 = float(input("Enter first number:"))
+    num2 = float(input("Enter second number:"))
+    result = num1+num2 
+    return result
+
+addition = decor(addition)
+print("addition is:" , addition()) 
+
+
+# Decorators with parameters in Python
+def decorator(*args, **kwargs):
+    print("Hello World!")
+    def inner(func):
+        print("I am Mrs.Destroyer")
+        print("I like" ,kwargs['like'])
+        func()
+    return inner 
+@decorator(like='chocolates')
+def my_func():
+    print("I like chocolates too much") 
+
+
+
+# Memoization using decorators in Python
+from functools import wraps
+from time import perf_counter
+import sys
+def memoize(func):
+    cache = {}
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        key = str(args) + str(kwargs)
+
+        if key not in cache:
+            cache[key] = func(*args, **kwargs)
+        return cache[key]
+    return wrapper
+@memoize
+def fibonacci(n) -> int:
+    if n < 2 :
+        return n 
+    return fibonacci(n-1)+fibonacci(n-2)
+if __name__== '__main__':
+    sys.setrecursionlimit(10_000)
+    start = perf_counter()
+    f = fibonacci(1000)
+    end = perf_counter()
+    print(f)
+    print(f'Time:{end - start} seconds')
+
+
+
+# Help function in Python
+def my_function(a,b):
+    print(a,b)
+help(my_function)
+
+
+
+# Python | range() does not return an iterator
+z = range (1,32,5)
+print(z)
+print(z.start)
+print(z.step)
+print(z.stop)
+print(z.index(31))
+
+
+#Python bit functions on int (bit_length, to_bytes and from_bytes)
+# int.bit_length
+num = 7
+print(num.bit_length())
+num = -7
+print(num.bit_length())
+#int.to_bytes
+print((1024).to_bytes(2, byteorder ='big'))
+#int.from_bytes
+print(int.from_bytes(b'\x56\x15', byteorder = 'big'))
